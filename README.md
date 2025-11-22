@@ -185,11 +185,11 @@ with app.app_context():
 
 Below is the Entity-Relationship diagram used to design this application:
 
-![ER Diagram](static/er_diagram.png)
+<p align="center">
+  <img src="templates/static/er_diagram.png" width="750">
+</p>
 
---------------------------------------------------------------------------------
-8. AUTHOR & LICENSE
---------------------------------------------------------------------------------
+🙌 Author
+Made with 💻 by Shashank Rawat👹
+👉 github.com/Shashank-712
 
-Developed by: Shashank Rawat
-For academic and demonstration purposes.
