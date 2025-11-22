@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+
+<h2 class="mb-4 fw-bold">Dashboard</h2>
+
+<div class="row g-4">
+
+  <div class="col-md-3">
+    <a href="{{ url_for('ui.shows') }}" class="text-decoration-none">
+      <div class="card shadow-sm p-3 text-center">
+        <h4>TV Shows</h4>
+        <p class="small-muted">Manage all shows</p>
+      </div>
+    </a>
+  </div>
+
+  <div class="col-md-3">
+    <a href="{{ url_for('ui.actors') }}" class="text-decoration-none">
+      <div class="card shadow-sm p-3 text-center">
+        <h4>Actors</h4>
+        <p class="small-muted">Add & assign actors</p>
+      </div>
+    </a>
+  </div>
+
+  <div class="col-md-3">
+    <a href="{{ url_for('ui.crew') }}" class="text-decoration-none">
+      <div class="card shadow-sm p-3 text-center">
+        <h4>Crew</h4>
+        <p class="small-muted">Manage directors, writers, etc.</p>
+      </div>
+    </a>
+  </div>
+
+</div>
+
+{% endblock %}
+

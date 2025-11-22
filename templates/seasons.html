@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>Seasons of {{ show.title }}</h2>
+
+{% if session.role == 'admin' %}
+  <a class="btn btn-success" href="{{ url_for('ui.season_add', show_id=show.id) }}">Add Season</a>
+{% endif %}
+
+<table class="table mt-3">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Season #</th>
+      <th>Title</th>
+      <th>Episodes</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    {% for s in seasons %}
+      <tr>
+        <td>{{ s.id }}</td>
+        <td>{{ s.season_number }}</td>
+        <td>{{ s.title or '-' }}</td>
+        <td>
+          <a class="btn btn-sm btn-primary" href="{{ url_for('ui.episodes', season_id=s.id) }}">
+            View Episodes
+          </a>
+        </td>
+
+        <td>
+          {% if session.role == 'admin' %}
+            <a class="btn btn-sm btn-outline-primary" href="{{ url_for('ui.season_edit', season_id=s.id) }}">
+              Edit
+            </a>
+
+            <form method="POST"
+                  action="{{ url_for('ui.season_delete', season_id=s.id) }}"
+                  style="display:inline"
+                  onsubmit="return confirm('Delete this season? Episodes will be deleted too.')">
+              <button class="btn btn-sm btn-outline-danger">Delete</button>
+            </form>
+          {% endif %}
+        </td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<a class="btn btn-secondary mt-3" href="{{ url_for('ui.shows') }}">Back to Shows</a>
+
+{% endblock %}
+

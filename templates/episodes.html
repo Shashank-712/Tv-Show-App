@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <div>
+    <h2 class="mb-0">Episodes — Season {{ season.season_number }}</h2>
+    <div class="small-muted">Show: {{ season.tvshow.title if season.tvshow else 'Unknown' }}</div>
+  </div>
+
+  <div>
+    <a class="btn btn-outline-secondary me-2" href="{{ url_for('ui.seasons', show_id=season.tvshow_id) }}">Back to Seasons</a>
+    {% if session.role == 'admin' %}
+      <button class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#addEpisodeForm" aria-expanded="false">
+        + Add Episode
+      </button>
+    {% endif %}
+  </div>
+</div>
+
+<!-- Add episode (collapsible) -->
+{% if session.role == 'admin' %}
+  <div class="collapse mb-4" id="addEpisodeForm">
+    <div class="card card-body shadow-sm">
+      <form method="POST" class="needs-validation" novalidate>
+        <div class="row g-2 align-items-center">
+          <div class="col-sm-2">
+            <label class="form-label visually-hidden" for="episode_number">#</label>
+            <input id="episode_number" name="episode_number" class="form-control" type="number" min="1" required placeholder="#">
+            <div class="invalid-feedback">Episode number (min 1) is required.</div>
+          </div>
+
+          <div class="col-sm-4">
+            <label class="form-label visually-hidden" for="title">Title</label>
+            <input id="title" name="title" class="form-control" required maxlength="200" placeholder="Episode title">
+            <div class="invalid-feedback">Title is required.</div>
+          </div>
+
+          <div class="col-sm-4">
+            <label class="form-label visually-hidden" for="description">Description</label>
+            <input id="description" name="description" class="form-control" placeholder="Description (optional)">
+            <div class="invalid-feedback">Please enter a valid description or leave blank.</div>
+          </div>
+
+          <div class="col-sm-2 d-grid">
+            <button class="btn btn-success">Add</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+{% endif %}
+
+<!-- Episodes table -->
+<div class="card shadow-sm">
+  <div class="card-body p-0">
+    <div class="table-responsive">
+      <table class="table table-hover mb-0">
+        <thead class="table-light">
+          <tr>
+            <th style="width:5%;">#</th>
+            <th style="width:25%;">Title</th>
+            <th style="width:30%;">Description</th>
+            <th style="width:15%;">Actors</th>
+            <th style="width:15%;">Crew</th>
+            <th style="width:10%;">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for e in season.episodes %}
+            <tr>
+              <td class="align-middle">{{ e.episode_number }}</td>
+              <td class="align-middle">{{ e.title or '-' }}</td>
+              <td class="align-middle text-truncate" style="max-width:360px;">{{ e.description or '-' }}</td>
+
+              <!-- Actors -->
+              <td class="align-middle">
+                {% if e.actors %}
+                  {% for a in e.actors %}
+                    <span class="badge bg-secondary me-1 mb-1">
+                      {{ a.first_name }}{% if a.last_name %} {{ a.last_name }}{% endif %}
+                    </span>
+                  {% endfor %}
+                {% else %}
+                  -
+                {% endif %}
+              </td>
+
+              <!-- Crew -->
+              <td class="align-middle">
+                {% if e.crew %}
+                  {% for c in e.crew %}
+                    <span class="badge bg-info text-dark me-1 mb-1">
+                      {{ c.first_name }}{% if c.last_name %} {{ c.last_name }}{% endif %}
+                      {% if c.person_definition %} ({{ c.person_definition }}){% endif %}
+                    </span>
+                  {% endfor %}
+                {% else %}
+                  -
+                {% endif %}
+              </td>
+
+              <td class="align-middle">
+                <div class="d-flex gap-1">
+                  <a class="btn btn-sm btn-outline-primary" href="{{ url_for('ui.episode_edit', episode_id=e.id) }}">Edit</a>
+                  {% if session.role == 'admin' %}
+                    <form method="POST" action="{{ url_for('ui.episode_delete', episode_id=e.id) }}" style="display:inline" onsubmit="return confirm('Delete episode?');">
+                      <button class="btn btn-sm btn-outline-danger">Delete</button>
+                    </form>
+                  {% endif %}
+                </div>
+              </td>
+            </tr>
+          {% else %}
+            <tr>
+              <td colspan="6" class="text-center py-4">
+                <div class="small-muted">No episodes yet. {% if session.role == 'admin' %}Click <strong>+ Add Episode</strong> to create one.{% endif %}</div>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

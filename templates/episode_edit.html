@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>Edit Episode — Season {{ season.season_number }}</h2>
+
+<form method="POST">
+  <div class="mb-3">
+    <label>Episode Number</label>
+    <input name="episode_number" class="form-control" required type="number" value="{{ episode.episode_number }}">
+  </div>
+
+  <div class="mb-3">
+    <label>Title</label>
+    <input name="title" class="form-control" value="{{ episode.title }}">
+  </div>
+
+  <div class="mb-3">
+    <label>Description</label>
+    <textarea name="description" class="form-control">{{ episode.description }}</textarea>
+  </div>
+
+  <div class="mb-3">
+    <label>Actors (hold Ctrl/Cmd to multi-select)</label>
+    <select name="actor_ids" multiple class="form-control">
+      {% for a in all_actors %}
+        <option value="{{ a.id }}" {% if a in episode.actors %}selected{% endif %}>
+          {{ a.first_name }} {{ a.last_name or '' }}
+        </option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <div class="mb-3">
+    <label>Crew (hold Ctrl/Cmd to multi-select)</label>
+    <select name="crew_ids" multiple class="form-control">
+      {% for c in all_crew %}
+        <option value="{{ c.id }}" {% if c in episode.crew %}selected{% endif %}>
+          {{ c.first_name }} {{ c.last_name or '' }} — {{ c.person_definition or '' }}
+        </option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <button class="btn btn-primary">Save</button>
+  <a class="btn btn-secondary" href="{{ url_for('ui.episodes', season_id=episode.season_id) }}">Cancel</a>
+</form>
+
+{% endblock %}

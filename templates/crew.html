@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Crew{% endblock %}
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="fw-bold">Crew Members</h2>
+</div>
+
+{% if session.role == 'admin' %}
+<form method="POST" class="card p-3 shadow-sm mb-4">
+    <h5 class="fw-bold mb-3">Add Crew Member</h5>
+    
+    <div class="row g-3">
+        <div class="col-md-4">
+            <input name="first_name" class="form-control" required placeholder="First name">
+        </div>
+        <div class="col-md-4">
+            <input name="last_name" class="form-control" placeholder="Last name (optional)">
+        </div>
+        <div class="col-md-4">
+            <input name="person_definition" class="form-control" required placeholder="Role (Director, Writer...)">
+        </div>
+    </div>
+    <button class="btn btn-primary mt-3">Add Crew</button>
+</form>
+{% endif %}
+
+<div class="list-group shadow-sm">
+    {% for c in crew %}
+    <div class="list-group-item">
+        {{ c.first_name }} {{ c.last_name or "" }} — <strong>{{ c.person_definition }}</strong>
+    </div>
+    {% else %}
+    <div class="alert alert-info">No crew members added yet.</div>
+    {% endfor %}
+</div>
+
+{% endblock %}
+

@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>Register</h2>
+
+<form method="POST" class="needs-validation" novalidate>
+  <div class="mb-3">
+    <label for="username" class="form-label">Username</label>
+    <input id="username" name="username" class="form-control" required minlength="3" maxlength="50" placeholder="Choose a username">
+    <div class="invalid-feedback">Please choose a username (3+ characters).</div>
+  </div>
+
+  <div class="mb-3">
+    <label for="email" class="form-label">Email (optional)</label>
+    <input id="email" name="email" type="email" class="form-control" placeholder="you@example.com">
+    <div class="invalid-feedback">Please enter a valid email address.</div>
+  </div>
+
+  <div class="mb-3">
+    <label for="password" class="form-label">Password</label>
+    <input id="password" name="password" class="form-control" required minlength="6" placeholder="Choose a password (6+ chars)">
+    <div class="invalid-feedback">Password must be at least 6 characters.</div>
+  </div>
+
+  <div class="mb-3">
+    <label for="password2" class="form-label">Confirm password</label>
+    <input id="password2" name="password2" class="form-control" required minlength="6" placeholder="Repeat your password">
+    <div class="invalid-feedback">Passwords must match (client check only).</div>
+  </div>
+
+  <button class="btn btn-success">Register</button>
+</form>
+
+<!-- optional small script to check password match before submit -->
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var form = document.querySelector('form.needs-validation');
+  if (!form) return;
+  form.addEventListener('submit', function (e) {
+    var pwd = form.querySelector('#password');
+    var p2 = form.querySelector('#password2');
+    if (pwd && p2 && pwd.value !== p2.value) {
+      e.preventDefault();
+      e.stopPropagation();
+      p2.setCustomValidity('Passwords do not match');
+      p2.reportValidity();
+      form.classList.add('was-validated');
+      p2.focus();
+      return false;
+    } else if (p2) {
+      p2.setCustomValidity('');
+    }
+    // allow form-validation.js handle the rest
+  });
+});
+</script>
+
+
+{% endblock %}
+

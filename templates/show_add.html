@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>Add TV Show</h2>
+
+<form method="POST" class="needs-validation" novalidate>
+  <div class="mb-3">
+    <label for="title" class="form-label">Title</label>
+    <input id="title" name="title" class="form-control" required maxlength="200" placeholder="Enter show title">
+    <div class="invalid-feedback">Title is required.</div>
+  </div>
+
+  <div class="mb-3">
+    <label for="description" class="form-label">Description</label>
+    <textarea id="description" name="description" class="form-control" rows="3" maxlength="1000" placeholder="Short description (optional)"></textarea>
+    <div class="invalid-feedback">Please enter a valid description (or leave blank).</div>
+  </div>
+
+  <button class="btn btn-primary">Add Show</button>
+</form>
+
+
+{% endblock %}
+
